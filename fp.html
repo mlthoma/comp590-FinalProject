@@ -54,9 +54,68 @@
   // ---------------------------------
   // Todo: You complete the code
   // ---------------------------------
+  attribute vec4 vertex;
+  attribute vec4 normal;
+  attribute vec2 vTexCoord;
+
+  uniform mat4 V; 
+  uniform mat4 P;
+  uniform vec4 props;
+  uniform vec4 trans;
+  uniform vec4 light;
+
+  varying vec3 N, L, E;
+  varying vec2 fTexCoord;
 
   void main() {
-     
+      float s_x = sin( props[0] );
+      float c_x = cos( props[0] );
+
+      mat4 Rx = mat4( 1.0, 0.0, 0.0, 0.0,
+                    0.0, c_x, s_x, 0.0,
+                    0.0, -s_x, c_x, 0.0,
+                    0.0, 0.0, 0.0, 1.0 );
+    
+      float s_y = sin( props[1] );
+      float c_y = cos( props[1] );
+
+      mat4 Ry = mat4( c_y, 0.0, -s_y, 0.0,
+                    0.0, 1.0, 0.0, 0.0,
+                    s_y, 0.0, c_y, 0.0,
+                    0.0, 0.0, 0.0, 1.0 );
+    
+      float s_z = sin( props[2] );
+      float c_z = cos( props[2] );
+
+      mat4 Rz = mat4( c_z, s_z, 0.0, 0.0,
+                    -s_z, c_z, 0.0, 0.0,
+                    0.0, 0.0, 1.0, 0.0,
+                    0.0, 0.0, 0.0, 1.0 );
+    
+      mat4 S = mat4( props[3], 0.0, 0.0, 0.0,
+                   0.0, props[3], 0.0, 0.0,
+                   0.0, 0.0, props[3], 0.0,
+                   0.0, 0.0, 0.0, 1.0 );
+
+      mat4 T = mat4( 1.0, 0.0, 0.0, 0.0,
+                  0.0, 1.0, 0.0, 0.0,
+                  0.0, 0.0, 1.0, 0.0,
+                  trans[0], trans[1], trans[2], 1.0 );
+
+      mat4 Model = S * T * Rx * Rz * Ry;
+            
+      vec3 v_p = -(P * V * Model * vertex).xyz;
+      vec3 v_l = light.xyz;
+      vec3 v_n = (P * V * Model * normal).xyz;
+    
+      L = normalize( v_l - v_p );
+      E = -v_p;
+      N = normalize( v_n );
+
+      fTexCoord = vTexCoord;
+      gl_Position = P * V * Model * vertex;
+    
+  
   }
 
 </script>
@@ -73,10 +132,24 @@
     float shininess = 800.0; 
     vec4 kd = vec4( 0.9, 0.9, 0.9, 1.0 );
     vec4 ka = vec4( 0.2, 0.2, 0.2, 1.0 );
-  
-    void main() {
 
+
+    varying vec2 fTexCoord;
+    uniform sampler2D texture;
+    varying vec3 N, L, E;
+
+    void main() {
+        vec4 textureColor = texture2D(texture, fTexCoord);
+        vec3 H = normalize(L + E);
+        vec4 diffuse = kd * textureColor * max(dot(L, N), 0.0);
+        vec4 ambient = ka * textureColor;
+        vec4 specular = vec4(0.0);
+        
+        if(dot(L, N) > 0.0) {
+            specular = pow(max(dot(N, H), 0.0), shininess) * vec4(1.0);
+        }
+
+        gl_FragColor = diffuse + ambient + specular;
     }
-  
 </script>
 </html>
