@@ -149,7 +149,7 @@
             specular = pow(max(dot(N, H), 0.0), shininess) * vec4(1.0);
         }
 
-        gl_FragColor = diffuse + ambient + specular;
+        gl_FragColor = diffuse + ambient;
     }
 </script>
 </html>
