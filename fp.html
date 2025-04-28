@@ -131,25 +131,34 @@
   
     float shininess = 800.0; 
     vec4 kd = vec4( 0.9, 0.9, 0.9, 1.0 );
-    vec4 ka = vec4( 0.2, 0.2, 0.2, 1.0 );
+    vec4 ka = vec4( 0.1, 0.1, 0.1, 1.0 );
 
 
     varying vec2 fTexCoord;
     uniform sampler2D texture;
     varying vec3 N, L, E;
+    uniform int shading_enabled;
 
     void main() {
         vec4 textureColor = texture2D(texture, fTexCoord);
         vec3 H = normalize(L + E);
-        vec4 diffuse = kd * textureColor * max(dot(L, N), 0.0);
+        vec4 diffuse = kd * textureColor * pow(max(dot(L, N), 0.0), 100.0);
         vec4 ambient = ka * textureColor;
-        vec4 specular = vec4(0.0);
+        vec4 specular = pow( max(dot(N, H), 0.0), shininess ) * ka;
         
-        if(dot(L, N) > 0.0) {
-            specular = pow(max(dot(N, H), 0.0), shininess) * vec4(1.0);
+        if(dot(L, N) < 0.0) {
+            specular = vec4( 0.0, 0.0, 0.0, 1.0 );
+           
         }
+        if ( shading_enabled == 1 ) {
 
-        gl_FragColor = diffuse + ambient + specular;
+            gl_FragColor = textureColor;
+         
+        } else {
+         
+            gl_FragColor = diffuse + ambient + specular;
+         
+        }
     }
 </script>
 </html>

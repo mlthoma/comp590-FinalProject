@@ -259,6 +259,7 @@ function drawSun() {
     webgl_context.activeTexture(webgl_context.TEXTURE1);
     webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[1]);
     webgl_context.uniform1i(uniform_texture, 1);
+    webgl_context.uniform1i(uniform_shading, 1);
     webgl_context.uniform4f(uniform_props, 0, radians(sun_y_rot), 0, SUN_SCALE);
     webgl_context.uniform4f(uniform_trans, 0, 0, 0, 1.0);
     webgl_context.drawArrays(webgl_context.TRIANGLES, sun_axis_index, earth_axis_index - sun_axis_index);
@@ -270,6 +271,7 @@ function drawEarth(earthPos) {
     webgl_context.activeTexture(webgl_context.TEXTURE0);
     webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[0]);
     webgl_context.uniform1i(uniform_texture, 0);
+    webgl_context.uniform1i(uniform_shading, 0);
     webgl_context.uniform4f(uniform_props, 0, radians(earth_y_rot), 0, EARTH_SCALE);
     webgl_context.uniform4f(uniform_trans, earthPos[0], earthPos[1], earthPos[2], 1.0);
     webgl_context.drawArrays(webgl_context.TRIANGLES, earth_axis_index, moon_axis_index - earth_axis_index);
@@ -280,6 +282,7 @@ function drawMoon(moonPos) {
     webgl_context.activeTexture(webgl_context.TEXTURE2);
     webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[2]);
     webgl_context.uniform1i(uniform_texture, 2);
+    webgl_context.uniform1i(uniform_shading, 0);
     webgl_context.uniform4f(uniform_props, 0, radians(moon_y_rot), 0, MOON_SCALE);
     webgl_context.uniform4f(uniform_trans, moonPos[0], moonPos[1], moonPos[2], 1.0);
     webgl_context.drawArrays(webgl_context.TRIANGLES, moon_axis_index, vertex_data.length - moon_axis_index);
@@ -299,7 +302,7 @@ function draw() {
     webgl_context.uniformMatrix4fv(uniform_perspective, false, flatten(P));
     
 
-    let light = vec4(0.0, 0.0, 0.0, 1.0);
+    let light = vec4(0.0, 0.0, 0.0, 0.0);
     webgl_context.uniform4fv(uniform_light, light);
 
     drawSun();
