@@ -164,26 +164,32 @@ function createTextureData() {
 function createTexture() {
     let textureIndex = 0;
     url_map.forEach((url, key) => {
+        const idx = textureIndex++;
         let image = new Image();
+        image.crossOrigin = "anonymous";
         image.onload = () => {
             let texture = webgl_context.createTexture();
-            webgl_context.activeTexture(webgl_context.TEXTURE0 + textureIndex);
+            webgl_context.activeTexture(webgl_context.TEXTURE0 + idx);
             webgl_context.bindTexture(webgl_context.TEXTURE_2D, texture);
             webgl_context.pixelStorei(webgl_context.UNPACK_FLIP_Y_WEBGL, true);
-            webgl_context.texImage2D(webgl_context.TEXTURE_2D, 0,
+            webgl_context.texImage2D(
+                webgl_context.TEXTURE_2D, 0,
                 webgl_context.RGB, webgl_context.RGB,
-                webgl_context.UNSIGNED_BYTE, image);
+                webgl_context.UNSIGNED_BYTE, image
+            );
             webgl_context.generateMipmap(webgl_context.TEXTURE_2D);
-            webgl_context.texParameteri(webgl_context.TEXTURE_2D,
+            webgl_context.texParameteri(
+                webgl_context.TEXTURE_2D,
                 webgl_context.TEXTURE_MIN_FILTER,
-                webgl_context.NEAREST_MIPMAP_LINEAR);
-            webgl_context.texParameteri(webgl_context.TEXTURE_2D,
+                webgl_context.NEAREST_MIPMAP_LINEAR
+            );
+            webgl_context.texParameteri(
+                webgl_context.TEXTURE_2D,
                 webgl_context.TEXTURE_MAG_FILTER,
-                webgl_context.NEAREST);
-            textures[textureIndex] = texture;
-            textureIndex++;
+                webgl_context.NEAREST
+            );
+            textures[idx] = texture;
         };
-        image.crossOrigin = "anonymous";
         image.src = url;
     });
 }
@@ -256,9 +262,9 @@ function calculateMoonPosition(earthPos) {
   
   
 function drawSun() {
-    webgl_context.activeTexture(webgl_context.TEXTURE1);
-    webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[1]);
-    webgl_context.uniform1i(uniform_texture, 1);
+    webgl_context.activeTexture(webgl_context.TEXTURE0);
+    webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[0]);
+    webgl_context.uniform1i(uniform_texture, 0);
     webgl_context.uniform1i(uniform_shading, 1);
     webgl_context.uniform4f(uniform_props, 0, radians(sun_y_rot), 0, SUN_SCALE);
     webgl_context.uniform4f(uniform_trans, 0, 0, 0, 1.0);
@@ -268,9 +274,9 @@ function drawSun() {
 
 
 function drawEarth(earthPos) {
-    webgl_context.activeTexture(webgl_context.TEXTURE0);
-    webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[0]);
-    webgl_context.uniform1i(uniform_texture, 0);
+    webgl_context.activeTexture(webgl_context.TEXTURE1);
+    webgl_context.bindTexture(webgl_context.TEXTURE_2D, textures[1]);
+    webgl_context.uniform1i(uniform_texture, 1);
     webgl_context.uniform1i(uniform_shading, 0);
     webgl_context.uniform4f(uniform_props, 0, radians(earth_y_rot), 0, EARTH_SCALE);
     webgl_context.uniform4f(uniform_trans, earthPos[0], earthPos[1], earthPos[2], 1.0);
