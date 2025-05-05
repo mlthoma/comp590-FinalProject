@@ -1,126 +1,212 @@
 <html>
-<head>
-    <link rel="stylesheet" href="fp.css">
-    <script src="https://www.cs.unm.edu/~angel/WebGL/7E/Common/initShaders.js" defer></script>
-    <script src="https://www.cs.unm.edu/~angel/WebGL/7E/Common/MV.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/gh/brent-munsell/graphics/models/msphere.js" defer></script>
+  <head>
+    <link rel="stylesheet" href="fp.css" />
+    <script
+      src="https://www.cs.unm.edu/~angel/WebGL/7E/Common/initShaders.js"
+      defer
+    ></script>
+    <script
+      src="https://www.cs.unm.edu/~angel/WebGL/7E/Common/MV.js"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/gh/brent-munsell/graphics/models/msphere.js"
+      defer
+    ></script>
     <script src="listeners.js" defer></script>
     <script src="helpers.js" defer></script>
     <script src="fp.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="container">
-        <div class="app">
-            <div class="title">Mini Solar System</div>
-            <div class="setting">
-                <div class="control">
-                  <ul>
-                        <li>Earth settings</li>
-                        <li><span>Orbit speed</span><span id="os_crd">=&nbsp;3</span></li>
-                        <li><input type="range" id="os" min="0" max="10" step="0.1" value="3"></li>
-                        <li><span>Orbit distance</span><span id="od_crd">=&nbsp;1.0</span></li>
-                        <li><input type="range" id="od" min="1.0" max="2.0" step="0.05" value="1.0"></li>
-                        <li><span>Orbit angle</span><span id="oa_crd">=&nbsp;0</span></li>
-                        <li><input type="range" id="oa" min="0" max="45" step="1" value="0"></li>
-                        <li><button id="reset_ss">reset</button></li>
-                  </ul> 
-                  <ul>
-                        <li>Camera settings</li>
-                        <li><span class="red-font">X</span><span id="x_crd">=&nbsp;0.0</span></li>
-                        <li><input type="range" id="xt" min="-1" max="1" step="0.01" value="0.0"></li>
-                        <li><span class="green-font">Y</span><span id="y_crd">=&nbsp;0.0</span></li>
-                        <li><input type="range" id="yt" min="-1" max="1" step="0.01" value="0.0"></li>
-                        <li><span class="blue-font">Z</span><span id="z_crd">=&nbsp;1.0</span></li>
-                        <li><input type="range" id="zt" min="-1" max="1" step="0.01" value="1.0"></li>
-                        <li><span>FoV</span><span id="fovy">=&nbsp;85</span></li>
-                        <li><input type="range" id="fov" min="10" max="100" step="1" value="85"></li>
-                        <li><button id="reset_cl">reset</button></li>
-                  </ul>
-                  
-                </div> <!-- end control -->
-                <div class="rock">
-                    <canvas id="webgl-canvas">
-                        Oops, your browser doesn't support the HTML5 canvas!
-                    </canvas>
-                </div> <!-- end rock -->
-            </div> <!-- end setting -->
-        </div> <!-- end app -->
-    </div> <!-- end containter -->
-</body>  
-<script id="vertex-shader" type="x-shader/x-vertex">
-  
-  precision mediump float;
-  
-  // ---------------------------------
-  // Todo: You complete the code
-  // ---------------------------------
-  attribute vec4 vertex;
-  attribute vec4 normal;
-  attribute vec2 vTexCoord;
+      <div class="app">
+        <div class="title">Mini Solar System</div>
+        <div class="setting">
+          <div class="control">
+            <ul>
+              <li>Earth settings</li>
+              <li><span>Orbit speed</span><span id="os_crd">=&nbsp;3</span></li>
+              <li>
+                <input
+                  type="range"
+                  id="os"
+                  min="0"
+                  max="10"
+                  step="0.1"
+                  value="3"
+                />
+              </li>
+              <li>
+                <span>Orbit distance</span><span id="od_crd">=&nbsp;1.0</span>
+              </li>
+              <li>
+                <input
+                  type="range"
+                  id="od"
+                  min="1.0"
+                  max="2.0"
+                  step="0.05"
+                  value="1.0"
+                />
+              </li>
+              <li><span>Orbit angle</span><span id="oa_crd">=&nbsp;0</span></li>
+              <li>
+                <input
+                  type="range"
+                  id="oa"
+                  min="0"
+                  max="45"
+                  step="1"
+                  value="0"
+                />
+              </li>
+              <li><button id="reset_ss">reset</button></li>
+            </ul>
+            <ul>
+              <li>Camera settings</li>
+              <li>
+                <span class="red-font">X</span
+                ><span id="x_crd">=&nbsp;0.0</span>
+              </li>
+              <li>
+                <input
+                  type="range"
+                  id="xt"
+                  min="-1"
+                  max="1"
+                  step="0.01"
+                  value="0.0"
+                />
+              </li>
+              <li>
+                <span class="green-font">Y</span
+                ><span id="y_crd">=&nbsp;0.0</span>
+              </li>
+              <li>
+                <input
+                  type="range"
+                  id="yt"
+                  min="-1"
+                  max="1"
+                  step="0.01"
+                  value="0.0"
+                />
+              </li>
+              <li>
+                <span class="blue-font">Z</span
+                ><span id="z_crd">=&nbsp;1.0</span>
+              </li>
+              <li>
+                <input
+                  type="range"
+                  id="zt"
+                  min="-1"
+                  max="1"
+                  step="0.01"
+                  value="1.0"
+                />
+              </li>
+              <li><span>FoV</span><span id="fovy">=&nbsp;85</span></li>
+              <li>
+                <input
+                  type="range"
+                  id="fov"
+                  min="10"
+                  max="100"
+                  step="1"
+                  value="85"
+                />
+              </li>
+              <li><button id="reset_cl">reset</button></li>
+            </ul>
+          </div>
+          <!-- end control -->
+          <div class="rock">
+            <canvas id="webgl-canvas">
+              Oops, your browser doesn't support the HTML5 canvas!
+            </canvas>
+          </div>
+          <!-- end rock -->
+        </div>
+        <!-- end setting -->
+      </div>
+      <!-- end app -->
+    </div>
+    <!-- end containter -->
+  </body>
+  <script id="vertex-shader" type="x-shader/x-vertex">
 
-  uniform mat4 V; 
-  uniform mat4 P;
-  uniform vec4 props;
-  uniform vec4 trans;
-  uniform vec4 light;
+    precision mediump float;
 
-  varying vec3 N, L, E;
-  varying vec2 fTexCoord;
+    // ---------------------------------
+    // Todo: You complete the code
+    // ---------------------------------
+    attribute vec4 vertex;
+    attribute vec4 normal;
+    attribute vec2 vTexCoord;
 
-  void main() {
-      float s_x = sin( props[0] );
-      float c_x = cos( props[0] );
+    uniform mat4 V;
+    uniform mat4 P;
+    uniform vec4 props;
+    uniform vec4 trans;
+    uniform vec4 light;
 
-      mat4 Rx = mat4( 1.0, 0.0, 0.0, 0.0,
-                    0.0, c_x, s_x, 0.0,
-                    0.0, -s_x, c_x, 0.0,
-                    0.0, 0.0, 0.0, 1.0 );
-    
-      float s_y = sin( props[1] );
-      float c_y = cos( props[1] );
+    varying vec3 N, L, E;
+    varying vec2 fTexCoord;
 
-      mat4 Ry = mat4( c_y, 0.0, -s_y, 0.0,
+    void main() {
+        float s_x = sin( props[0] );
+        float c_x = cos( props[0] );
+
+        mat4 Rx = mat4( 1.0, 0.0, 0.0, 0.0,
+                      0.0, c_x, s_x, 0.0,
+                      0.0, -s_x, c_x, 0.0,
+                      0.0, 0.0, 0.0, 1.0 );
+
+        float s_y = sin( props[1] );
+        float c_y = cos( props[1] );
+
+        mat4 Ry = mat4( c_y, 0.0, -s_y, 0.0,
+                      0.0, 1.0, 0.0, 0.0,
+                      s_y, 0.0, c_y, 0.0,
+                      0.0, 0.0, 0.0, 1.0 );
+
+        float s_z = sin( props[2] );
+        float c_z = cos( props[2] );
+
+        mat4 Rz = mat4( c_z, s_z, 0.0, 0.0,
+                      -s_z, c_z, 0.0, 0.0,
+                      0.0, 0.0, 1.0, 0.0,
+                      0.0, 0.0, 0.0, 1.0 );
+
+        mat4 S = mat4( props[3], 0.0, 0.0, 0.0,
+                     0.0, props[3], 0.0, 0.0,
+                     0.0, 0.0, props[3], 0.0,
+                     0.0, 0.0, 0.0, 1.0 );
+
+        mat4 T = mat4( 1.0, 0.0, 0.0, 0.0,
                     0.0, 1.0, 0.0, 0.0,
-                    s_y, 0.0, c_y, 0.0,
-                    0.0, 0.0, 0.0, 1.0 );
-    
-      float s_z = sin( props[2] );
-      float c_z = cos( props[2] );
-
-      mat4 Rz = mat4( c_z, s_z, 0.0, 0.0,
-                    -s_z, c_z, 0.0, 0.0,
                     0.0, 0.0, 1.0, 0.0,
-                    0.0, 0.0, 0.0, 1.0 );
-    
-      mat4 S = mat4( props[3], 0.0, 0.0, 0.0,
-                   0.0, props[3], 0.0, 0.0,
-                   0.0, 0.0, props[3], 0.0,
-                   0.0, 0.0, 0.0, 1.0 );
+                    trans[0], trans[1], trans[2], 1.0 );
 
-      mat4 T = mat4( 1.0, 0.0, 0.0, 0.0,
-                  0.0, 1.0, 0.0, 0.0,
-                  0.0, 0.0, 1.0, 0.0,
-                  trans[0], trans[1], trans[2], 1.0 );
+        mat4 Model = S * T * Rx * Rz * Ry;
 
-      mat4 Model = S * T * Rx * Rz * Ry;
-            
-      vec3 v_p = -(P * V * Model * vertex).xyz;
-      vec3 v_l = light.xyz;
-      vec3 v_n = (P * V * Model * normal).xyz;
-    
-      L = normalize( v_l - v_p );
-      E = -v_p;
-      N = normalize( v_n );
+        vec3 v_p = -(P * V * Model * vertex).xyz;
+        vec3 v_l = light.xyz;
+        vec3 v_n = (P * V * Model * normal).xyz;
 
-      fTexCoord = vTexCoord;
-      gl_Position = P * V * Model * vertex;
-    
-  
-  }
+        L = normalize( v_l - v_p );
+        E = -v_p;
+        N = normalize( v_n );
 
-</script>
+        fTexCoord = vTexCoord;
+        gl_Position = P * V * Model * vertex;
 
-<script id="fragment-shader" type="x-shader/x-fragment">
+
+    }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
 
     precision mediump float;
     precision lowp int;
@@ -128,8 +214,8 @@
     // ---------------------------------
     // Todo: You complete the code
     // ---------------------------------
-  
-    float shininess = 800.0; 
+
+    float shininess = 800.0;
     vec4 kd = vec4( 0.9, 0.9, 0.9, 1.0 );
     vec4 ka = vec4( 0.2, 0.2, 0.2, 1.0 );
 
@@ -137,8 +223,12 @@
     varying vec2 fTexCoord;
     uniform sampler2D texture;
     varying vec3 N, L, E;
-
     void main() {
+        gl_FragColor = texture2D(texture, fTexCoord);
+    }
+  </script>
+</html>
+<!-- void main() {
         vec4 textureColor = texture2D(texture, fTexCoord);
         vec3 H = normalize(L + E);
         vec4 diffuse = kd * textureColor * max(dot(L, N), 0.0);
@@ -150,6 +240,4 @@
         }
 
         gl_FragColor = diffuse + ambient;
-    }
-</script>
-</html>
+    } -->
