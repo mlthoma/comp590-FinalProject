@@ -324,5 +324,6 @@ configure();
 createVertexData();
 createTextureData();
 createTexture();
+createNormalData();
 allocateMemory();
 setInterval(draw, 100);

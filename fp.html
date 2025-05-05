@@ -130,8 +130,9 @@
     // ---------------------------------
   
     float shininess = 800.0; 
-    vec4 kd = vec4( 0.9, 0.9, 0.9, 1.0 );
-    vec4 ka = vec4( 0.1, 0.1, 0.1, 1.0 );
+    vec4 kd = vec4( 0.5, 0.5, 0.5, 1.0 );
+    vec4 ka = vec4( 0.2, 0.2, 0.2, 1.0 );
+    vec4 ks = vec4( 0.1, 0.1, 0.1, 1.0 );
 
 
     varying vec2 fTexCoord;
@@ -142,13 +143,12 @@
     void main() {
         vec4 textureColor = texture2D(texture, fTexCoord);
         vec3 H = normalize(L + E);
-        vec4 diffuse = kd * textureColor * pow(max(dot(L, N), 0.0), 100.0);
+        vec4 diffuse = kd * textureColor * pow(max(dot(L, N), 0.0), 50.0);
         vec4 ambient = ka * textureColor;
-        vec4 specular = pow( max(dot(N, H), 0.0), shininess ) * ka;
+        vec4 specular = pow( max(dot(N, H), 0.0), shininess ) * ks;
         
         if(dot(L, N) < 0.0) {
             specular = vec4( 0.0, 0.0, 0.0, 1.0 );
-           
         }
         if ( shading_enabled == 1 ) {
 
