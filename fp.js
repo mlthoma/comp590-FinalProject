@@ -134,10 +134,10 @@ function createVertexData() {
 }
 
 function createNormalData() {
-    normal_data = [];
-    for (let i = 0; i < vertex_data.length; i++) {
-        normal_data.push(normalize(vertex_data[i]));
-    }
+    normal_data = vertex_data.map((v) => {
+      const n = vec3(v[0], v[1], v[2]);
+      return normalize(n);
+    });
 }
   
 function createTextureData() {

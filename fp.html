@@ -143,7 +143,7 @@
     void main() {
         vec4 textureColor = texture2D(texture, fTexCoord);
         vec3 H = normalize(L + E);
-        vec4 diffuse = kd * textureColor * pow(max(dot(L, N), 0.0), 50.0);
+        vec4 diffuse = kd * textureColor * max(dot(L, N), 0.0);
         vec4 ambient = ka * textureColor;
         vec4 specular = pow( max(dot(N, H), 0.0), shininess ) * ks;
         
